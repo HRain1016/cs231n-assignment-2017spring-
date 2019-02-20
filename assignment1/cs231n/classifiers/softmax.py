@@ -88,8 +88,11 @@ def softmax_loss_vectorized(W, X, y, reg):
   loss += np.sum(-np.log(probilities[np.arange(num_train), y])) / num_train
   loss += reg * np.sum(W * W)
   
-  probilities[np.arange(num_train), y] -= 1
-  dW = X.T.dot(probilities) / num_train
+  probilities[np.arange(num_train), y] -= 1  # 从softmax损失公式求导后推出，
+                               # 对L_i除了正确标签y_i，对其他的y_j的导数都等于其指数概率；
+                               # 正确的y_i要减去1。         
+  dscores = probilities / num_train #求总L时除以N，所以也需要除以N
+  dW = X.T.dot(dscores) 
   dW += reg * 2 * W
   #############################################################################
   #                          END OF YOUR CODE                                 #

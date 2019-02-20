@@ -111,7 +111,7 @@ class TwoLayerNet(object):
     # and biases. Store the results in the grads dictionary. For example,       #
     # grads['W1'] should store the gradient on W1, and be a matrix of same size #
     #############################################################################
-    probilities[np.arange(N), y] -= 1  # 这个矩阵就是数据损失对s的倒数
+    probilities[np.arange(N), y] -= 1  # 这个矩阵就是数据损失对s的导数
     dscores = probilities / N
     dW1 = reg * 2 * W1
     dW2 = reg * 2 * W2

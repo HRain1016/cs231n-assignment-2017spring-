@@ -99,7 +99,7 @@ def svm_loss_vectorized(W, X, y, reg):
   # loss.                                                                     #
   #############################################################################
   # 首先需要知道每行有多少间隔大于0的元素，用于求真实标签对应的w的梯度
-  magins[magins>0] = 1
+  magins[magins > 0] = 1
   num_max0 = np.sum(magins, axis=1) # 按行求和即可
   #由于正确得分位置的间隔一定为0，所以间隔矩阵不为0的地方对应的就是非真实标签
   #的梯度
@@ -108,8 +108,9 @@ def svm_loss_vectorized(W, X, y, reg):
   #在真实标签数字列需要减去X[i]的倍数，这个倍数从上面num_max0求出来了
   #需要在magins矩阵的每行中的标签位置减去这个倍数
   magins[np.arange(num_train),y] -= num_max0
-  dW = X.T.dot(magins)/num_train
-  dW += reg*2*W
+  dscores = magins / num_train
+  dW = X.T.dot(dscores)
+  dW += reg * 2 * W
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
